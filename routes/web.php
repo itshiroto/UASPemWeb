@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,26 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::group(['middleware' => 'guest'], function () {
+    Route::post('/register', [UserController::class, 'register']);
+    Route::post('/login', [UserController::class, 'login']);
+});
+
+Route::group(['middleware' => ['auth', 'isAdmin']], function () {
+    Route::get('/admin', [UserController::class, 'adminPage']);
+});
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/logout', [UserController::class, 'logout']);
+});
+
+
+Route::get('/check', [UserController::class, 'isLoggedIn']);
+
+
+// get csrf token
+Route::get('/csrf', function () {
+    return csrf_token();
 });
