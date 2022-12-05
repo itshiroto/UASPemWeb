@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,6 +32,19 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/logout', [UserController::class, 'logout']);
 });
 
+
+Route::get('/categories', [CategoryController::class, 'getAll']);
+Route::get('/categories/{id}', [CategoryController::class, 'getById']);
+Route::post('/categories/create', [CategoryController::class, 'create']);
+Route::put('/categories/update/{id}', [CategoryController::class, 'update']);
+
+
+// category crud
+Route::get('/categories', [CategoryController::class, 'getAll']);
+Route::get('/categories/{id}', [CategoryController::class, 'getById']);
+Route::post('/categories/create', [CategoryController::class, 'create']);
+Route::put('/categories/update/{id}', [CategoryController::class, 'update']);
+Route::delete('/categories/delete/{id}', [CategoryController::class, 'delete']);
 
 Route::get('/check', [UserController::class, 'isLoggedIn']);
 
