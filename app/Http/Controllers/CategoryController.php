@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Product;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -34,11 +34,11 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        // validate request
         $request->validate([
             'name' => 'required',
         ]);
 
+    //    update category with id $id
         $category = Category::find($id);
         $category->update($request->all());
 
@@ -50,6 +50,6 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->delete();
 
-        return response()->json('Category deleted!');
+        return response()->json($category->name . ' deleted');  
     }
 }

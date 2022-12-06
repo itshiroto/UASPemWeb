@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,17 +34,18 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 
-Route::get('/categories', [CategoryController::class, 'getAll']);
-Route::get('/categories/{id}', [CategoryController::class, 'getById']);
-Route::post('/categories/create', [CategoryController::class, 'create']);
-Route::put('/categories/update/{id}', [CategoryController::class, 'update']);
-
+// product crud
+Route::get('/products', [ProductController::class, 'getAll']);
+Route::get('/products/{id}', [ProductController::class, 'getById']);
+Route::post('/products/create', [ProductController::class, 'create']);
+Route::post('/products/update/{id}', [ProductController::class, 'update']);
+Route::delete('/products/delete/{id}', [ProductController::class, 'delete']);
+Route::get('/products/category/{id}', [ProductController::class, 'getByCategory']);
 
 // category crud
 Route::get('/categories', [CategoryController::class, 'getAll']);
-Route::get('/categories/{id}', [CategoryController::class, 'getById']);
 Route::post('/categories/create', [CategoryController::class, 'create']);
-Route::put('/categories/update/{id}', [CategoryController::class, 'update']);
+Route::post('/categories/update/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/delete/{id}', [CategoryController::class, 'delete']);
 
 Route::get('/check', [UserController::class, 'isLoggedIn']);

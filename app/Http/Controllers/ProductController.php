@@ -10,13 +10,13 @@ class ProductController extends Controller
     // crud functions for products
     public function getAll()
     {
-        $products = Product::all();
+        $products = Product::with('categories')->get();
         return response()->json($products);
     }
 
     public function getById($id)
     {
-        $product = Product::find($id);
+        $product = Product::with('categories')->find($id);
         return response()->json($product);
     }
 
@@ -26,8 +26,23 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'category' => 'required'
         ]);
+
+    
+
+        $product = Product::create(
+            [
+                'name' => $request->name,
+                'description' => $request->description,
+            ]
+        );
+
+            
+        if ($request->category) {
+            $product->categories()->attach($request->category);
+        }
+
+        return response()->json($product);
     }
 
     public function update(Request $request, $id)
@@ -36,11 +51,20 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'category' => 'required'
         ]);
 
         $product = Product::find($id);
-        $product->update($request->all());
+
+        $product->update(
+            [
+                'name' => $request->name,
+                'description' => $request->description,
+            ]
+        );
+
+        if ($request->category) {
+            $product->categories()->sync($request->category);
+        }
 
         return response()->json($product);
     }
@@ -49,6 +73,15 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         $product->delete();
+    }
+
+    public function getByCategory($id)
+    {
+        $products = Product::whereHas('categories', function ($query) use ($id) {
+            $query->where('category_id', $id);
+        })->get();
+
+        return response()->json($products);
     }
 
 }
