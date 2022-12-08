@@ -35,7 +35,7 @@ class ProductController extends Controller
             [
                 'name' => $request->name,
                 'description' => $request->description,
-                'price' => $request->price,
+                'price' => (int)$request->price
             ]
         );
 
