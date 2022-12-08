@@ -15,7 +15,7 @@ return new class extends Migration
     {
         // add price to product table
         Schema::table('products', function (Blueprint $table) {
-            $table->integer('price');
+            $table->integer('price')->default(0);
         });
     }
 
