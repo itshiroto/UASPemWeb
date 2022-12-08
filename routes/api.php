@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\shoppingCartController;
+
 
 /*
 /*
@@ -18,15 +20,17 @@ use App\Http\Controllers\CategoryController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/unauthorized', function () {
+    return response()->json([
+        'message' => 'Unauthorized'
+    ], 401);
+})->name('unauthorized');
 
+Route::post('/auth/register', [UserController::class, 'register']);
+Route::post('/auth/login', [UserController::class, 'login']);
 
-Route::group(['middleware' => 'guest'], function () {
-    Route::post('/register', [UserController::class, 'register']);
-    Route::post('/login', [UserController::class, 'login']);
-});
+Route::get('/users', [UserController::class, 'isLoggedIn'])->middleware('auth:sanctum');
+
 
 Route::group(['middleware' => ['auth', 'isAdmin']], function () {
     Route::get('/admin', [UserController::class, 'adminPage']);
@@ -51,10 +55,19 @@ Route::post('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/update/{id}', [CategoryController::class, 'update']);
 Route::delete('/categories/delete/{id}', [CategoryController::class, 'delete']);
 
-Route::get('/check', [UserController::class, 'isLoggedIn']);
+// shopping cart
+Route::post('/cart/add', [shoppingCartController::class, 'addToCart'])->middleware('auth:sanctum');
+Route::get('/cart', [shoppingCartController::class, 'getCart'])->middleware('auth:sanctum');;
+Route::post('/cart/update/{id}', [shoppingCartController::class, 'updateCart']);
+Route::delete('/cart/delete/{id}', [shoppingCartController::class, 'deleteCart']);
 
 
 Route::fallback(function(){
     return response()->json([
         'message' => 'Page Not Found. If error persists, contact info@website.com'], 404);
+});
+
+// get csrf token
+Route::get('/csrf', function () {
+    return csrf_token();
 });

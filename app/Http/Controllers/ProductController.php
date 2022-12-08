@@ -29,16 +29,13 @@ class ProductController extends Controller
             'price' => 'required',
         ]);
 
-    
-
         $product = Product::create(
             [
                 'name' => $request->name,
                 'description' => $request->description,
-                'price' => (int)$request->price
+                'price' => $request->price,
             ]
         );
-
             
         if ($request->category) {
             $product->categories()->attach($request->category);
@@ -49,11 +46,6 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        // validate request
-        $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-        ]);
 
         $product = Product::find($id);
 

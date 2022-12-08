@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
-use App\Helpers\isExist;
-
-class UserController extends Controller
+class AuthController extends Controller
 {
-    //register
     public function register(Request $request)
     {
         // validate request, if email and username is not unique, return 409
@@ -67,12 +62,11 @@ class UserController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        $token = $user->createToken('authToken')->plainTextToken;
-
+        $tokenResult = $user->createToken('authToken')->plainTextToken;
 
         // return response with token
         return response()->json([
-            'access_token' => $token,
+            'access_token' => $tokenResult,
             'token_type' => 'Bearer',
             'user' => $user
         ]);
