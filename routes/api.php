@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\shoppingCartController;
+use App\Http\Controllers\InvoiceController;
 
 
 /*
@@ -61,6 +62,10 @@ Route::get('/cart', [shoppingCartController::class, 'getCart'])->middleware('aut
 Route::post('/cart/update/{id}', [shoppingCartController::class, 'updateCart']);
 Route::delete('/cart/delete/{id}', [shoppingCartController::class, 'deleteCart']);
 
+
+// invoice
+Route::post('/invoice/create', [InvoiceController::class, 'create'])->middleware('auth:sanctum');
+Route::get('/invoice', [InvoiceController::class, 'getUserInvoice'])->middleware('auth:sanctum');
 
 Route::fallback(function(){
     return response()->json([

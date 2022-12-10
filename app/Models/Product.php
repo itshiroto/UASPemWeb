@@ -23,4 +23,11 @@ class Product extends Model
         return $this->belongsToMany(Category::class, 'product_category');
         
     }
+
+    public function invoices()
+    {
+        // many to many relationship through invoice_product table
+        return $this->belongsToMany(Invoice::class, 'invoice_products');
+        
+    }
 }

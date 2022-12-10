@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\Product;
+use App\Helpers\isExist;
 
 class ProductController extends Controller
 {
@@ -28,6 +30,15 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
         ]);
+
+        // check if category exist
+
+        if (!isExist::isExist('Category', 'id' ,$request->category)) {
+            return response()->json([
+                'message' => 'Category not found'
+            ], 404);
+        }
+        
 
         $product = Product::create(
             [
