@@ -67,9 +67,17 @@ Route::delete('/cart/delete/{id}', [shoppingCartController::class, 'deleteCart']
 Route::post('/invoice/create', [InvoiceController::class, 'create'])->middleware('auth:sanctum');
 Route::get('/invoice', [InvoiceController::class, 'getUserInvoice'])->middleware('auth:sanctum');
 
-Route::fallback(function(){
+Route::post('/upload/test', function (Request $request) {
     return response()->json([
-        'message' => 'Page Not Found. If error persists, contact info@website.com'], 404);
+        'message' => $request->file('image')->getClientOriginalName(),
+        'type' => gettype($request->image)
+    ], 200);
+});
+
+Route::fallback(function () {
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact info@website.com'
+    ], 404);
 });
 
 // get csrf token
