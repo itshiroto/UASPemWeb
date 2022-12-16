@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Product;
 use App\Helpers\isExist;
+use Illuminate\Validation\Rules\File;
 
 class ProductController extends Controller
 {
@@ -29,25 +30,32 @@ class ProductController extends Controller
             'name' => 'required',
             'description' => 'required',
             'price' => 'required',
+            'image' => File::types(['jpg', 'png', 'jpeg'])->max(1024 * 10),
         ]);
 
         // check if category exist
 
-        if (!isExist::isExist('Category', 'id' ,$request->category)) {
+        if (!isExist::isExist('Category', 'id', $request->category)) {
             return response()->json([
                 'message' => 'Category not found'
             ], 404);
         }
-        
+
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $path = $request->file('image')->storePublicly('photos', 'public');
+            $url = asset('storage/' . $path);
+        }
+
 
         $product = Product::create(
             [
                 'name' => $request->name,
                 'description' => $request->description,
                 'price' => $request->price,
+                'image' => $url ?? null
             ]
         );
-            
+
         if ($request->category) {
             $product->categories()->attach($request->category);
         }
@@ -88,5 +96,4 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
-
 }
