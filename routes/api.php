@@ -54,7 +54,7 @@ Route::get('/products/category/{id}', [ProductController::class, 'getByCategory'
 Route::get('/categories', [CategoryController::class, 'getAll']);
 Route::post('/categories/create', [CategoryController::class, 'create']);
 Route::post('/categories/update/{id}', [CategoryController::class, 'update']);
-Route::delete('/categories/delete/{id}', [CategoryController::class, 'delete']);
+Route::get('/categories/delete/{id}', [CategoryController::class, 'delete']);
 
 // shopping cart
 Route::post('/cart/add', [shoppingCartController::class, 'addToCart'])->middleware('auth:sanctum');
