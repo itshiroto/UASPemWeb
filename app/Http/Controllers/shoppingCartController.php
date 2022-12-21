@@ -30,38 +30,7 @@ class shoppingCartController extends Controller
         // get products in cart by user id
         $cart = ShoppingCart::where('user_id', auth()->user()->id)->get();
 
-        // calculate total price using getTotalPriceAttribute in ShoppingCart model
-        $totalPrice = 0;
-        foreach ($cart as $item) {
-            $totalPrice += $item->total_price;
-        }
-
-        // calculate total quantity using getTotalQuantityAttribute in ShoppingCart model
-        $totalQuantity = 0;
-        foreach ($cart as $item) {
-            $totalQuantity += $item->total_quantity;
-        }
-
-        // get total price and total quantity for each product in cart
-        $products = [];
-        foreach ($cart as $item) {
-            $products[] = [
-                'id' => $item->id,
-                'name' => $item->product->name,
-                'price' => $item->product->price,
-                'quantity' => $item->quantity,
-                'total_price' => $item->total_price,
-                'total_quantity' => $item->total_quantity,
-            ];
-        }
-
-        
-
-        return response()->json([
-            'products' => $products,
-            'totalPrice' => $totalPrice,
-            'totalQuantity' => $totalQuantity,
-        ]);
+        return response()->json($cart);
 
 
     }
