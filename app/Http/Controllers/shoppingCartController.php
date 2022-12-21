@@ -27,8 +27,8 @@ class shoppingCartController extends Controller
 
     public function getCart()
     {
-        // get products in cart by user id
-        $cart = ShoppingCart::where('user_id', auth()->user()->id)->get();
+        // get products name in cart by user id
+        $cart = ShoppingCart::with('product')->where('user_id', auth()->user()->id)->get();
 
         return response()->json($cart);
 
