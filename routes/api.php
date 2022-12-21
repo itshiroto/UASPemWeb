@@ -47,7 +47,7 @@ Route::get('/products', [ProductController::class, 'getAll']);
 Route::get('/products/{id}', [ProductController::class, 'getById']);
 Route::post('/products/create', [ProductController::class, 'create']);
 Route::post('/products/update/{id}', [ProductController::class, 'update']);
-Route::delete('/products/delete/{id}', [ProductController::class, 'delete']);
+Route::get('/products/delete/{id}', [ProductController::class, 'delete']);
 Route::get('/products/category/{id}', [ProductController::class, 'getByCategory']);
 
 // category crud

@@ -27,7 +27,7 @@ class ShoppingCart extends Model
 
     public function getTotalPriceAttribute()
     {
-        return $this->product->price * $this->quantity;
+        return $this->quantity * $this->product->price;
     }
 
     public function getTotalQuantityAttribute()
